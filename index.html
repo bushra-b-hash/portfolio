@@ -10,6 +10,8 @@
 <button id="topBtn">↑ Top</button>
 
 <body>
+  <div id="progressBar"></div>  <!-- Scroll Progress Bar -->
+  <button id="topBtn">↑ Top</button>  <!-- Back-to-Top -->
 <header>
   <h1>BUSHRA PARVEEN</h1>
   <nav>
@@ -23,15 +25,19 @@
 </header>
 <main>
 <!-- Intro Section -->
-<section id="intro">
-  <h2>Hi, I'm Bushra 👋</h2>
+
+  
+  <section id="intro" class="fade-in">
+  <h2>Hi, I'm <span></span></h2>
   <p>3rd Year BTech Student | AI/ML Enthusiast | Hackathon Participant</p>
   <p>Exploring technology, solving problems, and building innovative solutions.</p>
   <a href="resume.pdf" target="_blank">Resume</a>
 </section>
 
+</section>
+
 <!-- About Me Section -->
-<section id="about">
+<section id="about" class="fade-in">
   <h2>About Me</h2>
   <p>
     I am Bushra, a 3rd-year BTech student with a strong passion for technology, 
@@ -57,18 +63,29 @@
 
 <!-- Skills-->
  
-    <section id="skills">
+    <section id="skills" class="fade-in">
   <h2>Skills</h2>
 
+ 
   <!-- Technical Skills -->
-  <h3>Technical Skills</h3>
-  <ul>
-    <li>Programming: C, Python</li>
-    <li>Web Development: HTML, CSS</li>
-    <li>AI/ML: Machine Learning, Data Analysis, Model Building</li>
-    <li>Tools & Platforms: GitHub, VS Code</li>
-    
-  </ul>
+<h3>Technical Skills</h3>
+
+<div class="skill-bar">
+  <div class="skill-bar-inner" data-skill="90%">Programming: C, Python</div>
+</div>
+
+<div class="skill-bar">
+  <div class="skill-bar-inner" data-skill="85%">Web Development: HTML, CSS</div>
+</div>
+
+<div class="skill-bar">
+  <div class="skill-bar-inner" data-skill="75%">AI/ML: Machine Learning, Data Analysis, Model Building</div>
+</div>
+
+<div class="skill-bar">
+  <div class="skill-bar-inner" data-skill="80%">Tools & Platforms: GitHub, VS Code</div>
+</div>
+
 
   <!-- Soft Skills -->
   <h3>Soft Skills</h3>
@@ -82,7 +99,7 @@
 </section>
 
  <!-- Project -->
-  <section id="projects">
+  <section id="projects" class="fade-in">
   <h2>Projects</h2>
 
   <!-- Project 1 -->
@@ -132,7 +149,7 @@
 </section>
 
 <!-- experience -->
- <section id="experience">
+ <section id="experience" class="fade-in">
   <h2>Experience</h2>
 
   <!-- Experience 1 -->
@@ -160,7 +177,7 @@
 </section>
 
 <!-- education -->
- <section id="education">
+ <section id="education" class="fade-in">
   <h2>Education</h2>
 
   <!-- BTech -->
@@ -188,7 +205,7 @@
 </section>
 
 <!-- achievement -->
- <section id="achievements">
+ <section id="achievements" class="fade-in">
   <h2>Achievements & Certifications</h2>
 
   <ul>
@@ -202,7 +219,7 @@
 </section>
 
 <!-- contact -->
- <section id="contact">
+ <section id="contact" class="fade-in">
   <h2>Contact Me</h2>
  
   <p>If you'd like to get in touch, feel free to reach out via email or connect with me on LinkedIn and GitHub.</p>
@@ -226,19 +243,60 @@
 </footer>  
 </main>
 <script>
-const topBtn = document.getElementById('topBtn');
 
+// Back to Top Button
+const topBtn = document.getElementById('topBtn');
 window.onscroll = function() {
-  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-    topBtn.style.display = 'block';
-  } else {
-    topBtn.style.display = 'none';
-  }
+    // Show/hide Back to Top button
+    topBtn.style.display = (document.documentElement.scrollTop > 200) ? 'block' : 'none';
+
+    // Scroll Progress Bar
+    let scrollTop = document.documentElement.scrollTop;
+    let scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (scrollTop / scrollHeight * 100) + '%';
+
+    // Fade-in sections on scroll
+    document.querySelectorAll('.fade-in').forEach(section => {
+        let sectionTop = section.getBoundingClientRect().top;
+        if(sectionTop < window.innerHeight - 100){
+            section.classList.add('visible');
+        }
+    });
+
+    // Animate skill bars when skills section is visible
+    const skillsSection = document.getElementById('skills').getBoundingClientRect().top;
+    if(skillsSection < window.innerHeight - 100){
+        animateSkills();
+    }
 };
 
+// Back to Top click event
 topBtn.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// Typing effect for Intro
+const introText = document.querySelector('#intro h2 span');
+let i = 0;
+const text = "Bushra 👋";
+function typeEffect() {
+    if(i < text.length){
+        introText.textContent += text.charAt(i);
+        i++;
+        setTimeout(typeEffect, 150);
+    }
+}
+introText.textContent = "";
+typeEffect();
+
+// Animate Skill Bars
+const skills = document.querySelectorAll('.skill-bar-inner');
+function animateSkills() {
+    skills.forEach(bar => {
+        bar.style.width = bar.getAttribute('data-skill');
+    });
+}
+
 </script>
 
 </body>
